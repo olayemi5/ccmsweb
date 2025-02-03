@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="SsmService.asmx.cs" Class="NIBssSSMService.SsmService" %>

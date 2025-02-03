@@ -1,0 +1,313 @@
+Please find the API extract for REVPAY PILOT development:
+
+This API extract is only implementable for XXSG(
+Demo/Pilot) Bank Branch environments.
+
+
+1.)Validate Guid Request:
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/Validate
+HTTP VERB=POST
+Hash Computation : SHA512(Key + WebGuid + State)
+
+{
+    "webguid": "19122170-13580-573",
+    "state": "XXSG",
+    "date": "10/Mar/2017",
+    "hash": "B71421925FA33944CEB58EA6F9948BCACE97A52ED398087C1AA44B97DAFC13536FF818478F9876FFE2C3F21BF787C426505F75D8AA0CA1E75D6E7E3B668BA962",
+    "clientid": "517578446363214"
+  }
+
+
+1a.) Sample Valid Response:
+
+{
+  "AmountDue": "989.00",
+  
+   "Status": "OK",
+  
+   "CreditAccount": "0011080195",
+  
+   "PayerName": "AKEEM ADEKUNLE JONATHAN",
+  
+   "AgencyCode": "4250000",
+  
+   "RevenueCode": "4010002",
+  
+   "OraAgencyRev": "13040-32102",
+   "State": "XXSG",
+  
+   "StatusMessage": "OK"
+  
+}
+
+1b.) Sample Failed Response:
+
+{
+  "AmountDue": "",
+  
+   "Status": "Status Failed",
+ 
+   "CreditAccount": "",
+  
+   "PayerName": "",
+  
+   "AgencyCode": "",
+  
+   "RevenueCode": "",
+  
+   "State": "XXSG",
+  
+   "StatusMessage": "Authentication failed"
+
+ }
+ 
+
+===================================================================================
+
+2.) Payment Notification Request:
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/Payment
+HTTP VERB=POST
+Hash Computation : SHA512(Key + WebGuid + State + Amount)
+
+{
+   "webguid": "19122170-13580-573",
+   "amountpaid": "1",
+   "paymentref": "037884661",
+   "creditaccount": "0011080195",
+   "date": "14/Mar/2017",
+   "PaymentChannel":"BankBranch",
+   "TellerName":"UserTest",
+   "hash": "D0B5B8F98BF83D76D4B29E54678247F617AD1A07D3948B5B63E27EA385F1776C4ECF12A03657C61D108D3D03687AFFCD2ADBA4AB056917DA9DEE17659552497B",
+   "state": "XXSG",
+   "clientid": "517578446363214"
+ }
+
+
+
+2a.) Sample Valid Response:
+{
+  
+  "WebGuid": "19122170-13580-573",
+  
+  "ResponseCode": "SUCCESSFULL",
+  
+  "ResponseDesc": "PostResult = Successful ",
+  
+  "ReceiptNumber": "https://www.ebsrcm.com/Listen/printreceipt.ashx?dbName=XXSG&payertype=N&payerid=1912217&transid=6284413&transcode=PCHCRZPU", 
+  "State": "XXSG"
+
+}
+
+
+2b.) Sample Failed Response:
+{
+  
+  "AmountDue": "",
+  
+  "Status": "Status Failed",
+  
+  "CreditAccount": "",
+  
+  "PayerName": "",
+  
+  "AgencyCode": "",
+  
+  "RevenueCode": "",
+  
+  "State": "XSSG",
+  
+  "StatusMessage": "Not Configured to collect for this state"
+ 
+ }
+
+============================================================================================================================================
+
+3.) Webguid Generation Request
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/WebGuid
+HTTP VERB=POST
+Hash Computation : SHA512(Key + Pid + State + Amount)
+
+{
+    "Pid": "N-1912217",
+    "State": "XXSG",
+    "Amount": "100",
+    "AgencyCode": "4250000",
+    "RevCode": "4010002",
+    "Hash": "50FE98A8D1F5F56A9EF832255908CAA0ABA481E3FDA188920B886ECA1575F94677989B52740DE9EEBEC23CB934EA726F8AEBF3301828E473FF60B6EA07049C77",
+    "clientId": "517578446363214"
+  }
+
+3a.) Sample Valid Response:
+{
+  
+    "WebGuid": "19122170-13649-197",
+  
+    "RespondCode": "SUCCESS",
+  
+    "ResponseDesc": "WebGuid Created"
+ 
+}
+
+3b.) Sample Failed Response:
+{
+ 
+   "RespondCode": "Failed",
+  
+   "ResponseDesc": "payer not found in noncorporate"
+
+ }
+
+
+
+============================================================================================================================================
+
+4.) Pid Verification Request
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/VerifyPid
+HTTP VERB=POST
+Hash Computation : SHA512(Key + Pid + State)
+
+{
+    "pid": "N-1912217",
+    "state": "XXSG",
+    "hash": "20BE3AE3DB993A8B2E61BF54F27BE971D2C26D74AB57CC605B3353623589390DCE77F57C18919FDA3084C710758574803C9883D7E620DA09199552C3E2604DA6",
+    "clientid": "517578446363214"
+  }
+
+4a.) Sample Valid Response:
+
+{
+  
+   "ResponseCode": "SUCCESS",
+ 
+   "ResponseDesc": "ValiD Pid",
+ 
+   "State": "XXSG",
+  
+   "Pid": "N-1912217",
+  
+   "Fullname": "AKEEM ADEKUNLE JONATHAN"
+
+ }
+
+4b.) Sample Failed Response:
+{
+ 
+  "ResponseCode": "FAILED",
+  
+  "ResponseDesc": "PId not found",
+  
+  "State": "XXSG",
+  "Pid": null,
+ 
+  "Fullname": null
+ }
+
+====================================================================================================================================================
+
+5.) Agency Code List  Request
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/AgencyCode
+HTTP VERB=POST
+Hash Computation : SHA512(Key + State)
+
+
+{
+    "state": "XXSG",
+    "hash": "419EC01117A5DD8952F7E7251CEA1D05CD3753B76DD890899CA338808E7289A48FD365416E0EBBB71411A076E647E897F2EFD08F7EE884FEDA2F6AA7B266C30A",
+    "clientid": "517578446363214"
+  }
+
+5a.) Sample Valid Response:
+[
+  
+  {
+  "AgencyRef": "3100000",
+   
+     "FullName": "Oshodi-Isolo LG",
+    
+     "HeadRef": "310"
+  
+  },
+  
+  {
+    
+     "AgencyRef": "3100110",
+    
+     "FullName": "Oshodi Area Office",
+    
+     "HeadRef": "310"
+  
+  },
+   ...
+   '''
+   '''
+  {
+  "AgencyHead": "999",
+
+     "RevCode": "9999999",
+    
+     "RevName": "Local Govt. Harmonised Revenue"
+  
+  }
+
+]
+
+====================================================================================================================================================
+
+6.) RevCode List by AgencyRef Request
+Url :http://revpay.ebsrcm.com/RevpayTest/Interface/RevCodeByAgencyRef
+HTTP VERB=POST
+Hash Computation : SHA512(Key + State + AgencyHead)
+
+
+{
+    "AgencyHead":"3100000",
+    "State": "XXSG",
+    "Hash": "05F5AC7D3B99ABA9C5C8C41CA0173DDFC01E5506CD41ABAFD9091C5F2933333E71928C598A638EAFEAB351ACDAD75035803B4515496B9FE6CCDCD8E7BD17CC40",
+    "clientid": "517578446363214"
+  }
+
+6a.) Sample Valid Response:
+[
+  
+  {
+  
+     "AgencyHead": "310",
+    
+     "RevCode": "1002001",
+    
+     "RevName": "Tenement Rate
+  },
+  
+  {
+    
+    "AgencyHead": "310",
+    
+    "RevCode": "1002002",
+    
+    "RevName": "Land Use Charge (Local Govt.)"  
+  },
+   ...
+   '''
+   '''
+  {
+ 
+    "AgencyHead": "310",
+    
+    "RevCode": "4990010",
+    
+    "RevName": "Reversal of Payments"
+  }
+
+]
+
+
+
+Note For Demo(Test Enviroment):
+CLientId =  517578446363214
+Key      =  PH5UVZG993ND6BMADS65
+Date Format = "ddmmmyyyy"
+OraAgencyRev should stored in your note field for reconciliation purpose
+
+Websites to verify you are doing the SHA512 correctly
+   -https://md5hashing.net/hash/sha512
+   -http://www.convertstring.com/Hash/SHA512
